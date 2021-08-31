@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useCallback } from "react";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
 
 import statusCards from "../assets/JsonData/status-card-data.json";
+import Badge from "../components/badge/Badge";
 import StatusCard from "../components/status-card/StatusCard";
+import Table from "../components/table/Table";
 
 const chartOptions = {
   series: [
@@ -49,7 +51,112 @@ const chartOptions = {
   },
 };
 
+const topCustomers = {
+  head: ["user", "total orders", "total spending"],
+  body: [
+    {
+      userName: "join due",
+      order: "490",
+      price: "$15,780",
+    },
+    {
+      userName: "join da",
+      order: "410",
+      price: "$15,780",
+    },
+    {
+      userName: "join de",
+      order: "190",
+      price: "$15,780",
+    },
+    {
+      userName: "join du",
+      order: "420",
+      price: "$55,780",
+    },
+  ],
+};
+
+const latestOrders = {
+  head: ["order id", "user", "total price", "date", "status"],
+  body: [
+    {
+      id: "#OD1711",
+      user: "join due",
+      date: "2021-05-04",
+      price: "$900",
+      status: "shipping",
+    },
+    {
+      id: "#OD1712",
+      user: "join de",
+      date: "2021-05-05",
+      price: "$900",
+      status: "pending",
+    },
+    {
+      id: "#OD1713",
+      user: "join de",
+      date: "2021-01-04",
+      price: "$902",
+      status: "paid",
+    },
+    {
+      id: "#OD1714",
+      user: "join d",
+      date: "2021-01-04",
+      price: "$902",
+      status: "refund",
+    },
+  ],
+};
+
+const orderStatus = {
+  shipping: "primary",
+  pending: "warning",
+  paid: "success",
+  refund: "danger",
+};
+
+const TopCustomerRowRender = ({ item, index }) => {
+  return (
+    <tr key={index}>
+      <td>{item.userName}</td>
+      <td>{item.order}</td>
+      <td>{item.price}</td>
+    </tr>
+  );
+};
+
+const LatestOrdersRowRender = ({ item, index }) => {
+  return (
+    <tr key={index}>
+      <td>{item.id}</td>
+      <td>{item.user}</td>
+      <td>{item.price}</td>
+      <td>{item.date}</td>
+      <td>
+        <Badge type={orderStatus[item.status]} content={item.status} />
+      </td>
+    </tr>
+  );
+};
+
 const Dashboard = () => {
+  const topCustomerRowRender = useCallback(
+    (item, index) => (
+      <TopCustomerRowRender item={item} index={index} key={index} />
+    ),
+    []
+  );
+
+  const latestOrderRowRender = useCallback(
+    (item, index) => (
+      <LatestOrdersRowRender item={item} index={index} key={index} />
+    ),
+    []
+  );
+
   return (
     <div>
       <h2 className="page-header">Dashboard</h2>
@@ -63,6 +170,7 @@ const Dashboard = () => {
             ))}
           </div>
         </div>
+
         <div className="col-6">
           <div className="card full-height">
             <Chart
@@ -79,7 +187,31 @@ const Dashboard = () => {
             <div className="card__header">
               <h3>top customers</h3>
             </div>
-            <div className="card__body">{/* Body */}</div>
+            <div className="card__body">
+              <Table
+                data={topCustomers.body}
+                rowRender={topCustomerRowRender}
+                headerRender={topCustomers.head}
+              />
+            </div>
+            <div className="card__footer">
+              <Link to="/">view all</Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="col-8">
+          <div className="card">
+            <div className="card__header">
+              <h3>latest orders</h3>
+            </div>
+            <div className="card__body">
+              <Table
+                data={latestOrders.body}
+                rowRender={latestOrderRowRender}
+                headerRender={latestOrders.head}
+              />
+            </div>
             <div className="card__footer">
               <Link to="/">view all</Link>
             </div>
