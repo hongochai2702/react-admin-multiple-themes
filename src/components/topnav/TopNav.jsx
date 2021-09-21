@@ -6,6 +6,7 @@ import "./topnav.css";
 import notifications from "../../assets/JsonData/notification.json";
 import userImage from "../../assets/images/tuat.png";
 import userMenus from "../../assets/JsonData/user_menus.json";
+import ThemeMenu from "../theme-menu/ThemeMenu";
 
 const userCurrent = {
   display_name: "Hai Ho",
@@ -80,7 +81,7 @@ const TopNavRight = () => {
         />
       </div>
       <div className="topnav__right-item">
-        <Dropdown />
+        <ThemeMenu />
       </div>
     </div>
   );

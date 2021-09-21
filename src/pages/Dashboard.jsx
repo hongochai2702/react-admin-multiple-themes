@@ -1,9 +1,10 @@
 import React, { useCallback } from "react";
 import Chart from "react-apexcharts";
 import { Link } from "react-router-dom";
-
+import { useSelector } from "react-redux";
 import statusCards from "../assets/JsonData/status-card-data.json";
 import Badge from "../components/badge/Badge";
+import Card from "../components/card/Card";
 import StatusCard from "../components/status-card/StatusCard";
 import Table from "../components/table/Table";
 
@@ -143,6 +144,8 @@ const LatestOrdersRowRender = ({ item, index }) => {
 };
 
 const Dashboard = () => {
+  const themeModeSelector = useSelector((state) => state.ThemeReducers.mode);
+
   const topCustomerRowRender = useCallback(
     (item, index) => (
       <TopCustomerRowRender item={item} index={index} key={index} />
@@ -174,7 +177,21 @@ const Dashboard = () => {
         <div className="col-6">
           <div className="card full-height">
             <Chart
-              options={chartOptions.options}
+              options={
+                themeModeSelector === "theme-mode-dark"
+                  ? {
+                      ...chartOptions.options,
+                      theme: {
+                        mode: "dark",
+                      },
+                    }
+                  : {
+                      ...chartOptions.options,
+                      theme: {
+                        mode: "light",
+                      },
+                    }
+              }
               series={chartOptions.series}
               type="line"
               height="100%"
@@ -183,39 +200,22 @@ const Dashboard = () => {
         </div>
 
         <div className="col-4">
-          <div className="card">
-            <div className="card__header">
-              <h3>top customers</h3>
-            </div>
-            <div className="card__body">
-              <Table
-                data={topCustomers.body}
-                rowRender={topCustomerRowRender}
-                headerRender={topCustomers.head}
-              />
-            </div>
-            <div className="card__footer">
-              <Link to="/">view all</Link>
-            </div>
-          </div>
+          <Card title="top customers" footer={<Link to="/">view all</Link>}>
+            <Table
+              data={topCustomers.body}
+              rowRender={topCustomerRowRender}
+              headerRender={topCustomers.head}
+            />
+          </Card>
         </div>
-
         <div className="col-8">
-          <div className="card">
-            <div className="card__header">
-              <h3>latest orders</h3>
-            </div>
-            <div className="card__body">
-              <Table
-                data={latestOrders.body}
-                rowRender={latestOrderRowRender}
-                headerRender={latestOrders.head}
-              />
-            </div>
-            <div className="card__footer">
-              <Link to="/">view all</Link>
-            </div>
-          </div>
+          <Card title="latest orders" footer={<Link to="/">view all</Link>}>
+            <Table
+              data={latestOrders.body}
+              rowRender={latestOrderRowRender}
+              headerRender={latestOrders.head}
+            />
+          </Card>
         </div>
       </div>
     </div>

@@ -1,13 +1,13 @@
 import React, { useEffect, useRef } from "react";
 import "./dropdown.css";
 
-const useToggleDropdown = ({ contentRef, toggleRef }) => {
+export const useToggleDropdown = ({ contentRef, toggleRef }) => {
   useEffect(() => {
     document.addEventListener("mousedown", (e) => {
       if (toggleRef.current && toggleRef.current.contains(e.target)) {
         contentRef.current.classList.toggle("active");
       } else {
-        if (toggleRef.current && !toggleRef.current.contains(e.target)) {
+        if (contentRef.current && !contentRef.current.contains(e.target)) {
           contentRef.current.classList.remove("active");
         }
       }

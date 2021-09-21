@@ -25,3 +25,38 @@ tbody > tr:hover {
   background-color: var(--main-color);
   color: var(--txt-white);
 }
+
+.table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.table__pagination_item ~ .table__pagination_item {
+  margin-left: 10px;
+}
+
+.table__pagination_item {
+  width: 30px;
+  height: 30px;
+  /* border-radius: 50%; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background-color: var(--second-bg);
+}
+
+.table__pagination_item.active,
+.table__pagination_item.active:hover {
+  background-color: var(--main-color);
+  color: var(--txt-white);
+  font-weight: 600;
+}
+
+.table__pagination_item:hover {
+  background-color: var(--second-color);
+  color: var(--txt-white);
+}
